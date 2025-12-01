@@ -1,0 +1,72 @@
+import { useState } from "react";
+
+function App() {
+  const [matricula, setMatricula] = useState("");
+  const [password, setPassword] = useState("");
+  const [perfil, setPerfil] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const datos = {
+      matricula,
+      password,
+      perfil,
+    };
+
+    console.log("Datos enviados:", datos);
+
+    // Aquí llamaremos al backend más adelante
+    fetch("http://localhost:3001/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(datos),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log("Respuesta:", data));
+  };
+
+  return (
+    <div style={{ width: "300px", margin: "50px auto" }}>
+      <h2>Login</h2>
+
+      <form onSubmit={handleSubmit}>
+        <label>Matrícula:</label>
+        <input
+          type="text"
+          value={matricula}
+          onChange={(e) => setMatricula(e.target.value)}
+          required
+        />
+
+        <label>Contraseña:</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <label>Perfil:</label>
+        <select
+          value={perfil}
+          onChange={(e) => setPerfil(e.target.value)}
+          required
+        >
+          <option value="">Seleccionar</option>
+          <option value="docente">Docente</option>
+          <option value="administrativo">Administrativo</option>
+          <option value="alumno">Alumno</option>
+        </select>
+
+        <button type="submit" style={{ marginTop: "15px" }}>
+          Entrar
+        </button>
+      </form>
+    </div>
+  );
+}
+
+export default App;
